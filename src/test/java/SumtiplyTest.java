@@ -28,17 +28,4 @@ public class SumtiplyTest {
         int result = Sumtiply.Sumtiplication(baseList);
         Assert.assertEquals(514579, result);
     }
-
-    @Test
-    void ListOfIntCanBeConvertedBack() {
-        String baseString = """
-                1721
-                979
-                366
-                299
-                675
-                1456""";
-        int[] actual = Sumtiply.listOfIntFromText(baseString);
-        Assert.assertArrayEquals(baseList, actual);
-    }
 }

@@ -10,11 +10,6 @@ public class Sumtiply {
         return (a + b == 2020);
     }
 
-    public static int[] listOfIntFromText(@NotNull String str) {
-        String[] strNums = str.split("\n");
-        return Stream.of(strNums).mapToInt(Integer::parseInt).toArray();
-    }
-
     public static Pair<Integer, Integer> GetSumOf2020(int[] numberList) {
         for (int n : numberList) {
             for (int m : numberList) {
