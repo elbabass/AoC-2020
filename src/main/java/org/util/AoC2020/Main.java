@@ -1,8 +1,35 @@
 package org.util.AoC2020;
 
+import io.reactivex.rxjava3.core.Maybe;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+
 public class Main {
+    static final String baseUrl = "https://adventofcode.com/2020/day/1/input";
     public static void main(String[] args) {
-        String entry = """
+        Maybe<String> entry = getEntry();
+        int output = Sumtiply.Sumtiplication(Sumtiply.listOfIntFromText(Objects.requireNonNull(entry.blockingGet())));
+        System.out.println("Output is " + output);
+
+//        entry.doOnSuccess((str) -> {
+//            int output = Sumtiply.Sumtiplication(Sumtiply.listOfIntFromText(str));
+//            System.out.println("Output is " + output);
+//        });
+    }
+
+    private static Maybe<String> getEntry() {
+//        try {
+//            InputStream inputStream = new URL(baseUrl).openStream();
+//            return Maybe.just(IOUtils.toString(inputStream, StandardCharsets.UTF_8));
+//        } catch (IOException e) {
+//            return Maybe.error(e);
+//        }
+        return Maybe.just("""
                 1993
                 1715
                 1997
@@ -203,8 +230,6 @@ public class Main {
                 1960
                 1050
                 1293
-                """;
-        int output = Sumtiply.Sumtiplication(Sumtiply.listOfIntFromText(entry));
-        System.out.println("Output is %d" + output);
+                """);
     }
 }
