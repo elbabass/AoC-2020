@@ -13,11 +13,11 @@ public class Helpers {
         return Stream.of(strNums).mapToInt(Integer::parseInt).toArray();
     }
 
-    public static Maybe<String> getEntry() {
+    public static Maybe<String> getEntry(String basePath) {
         String entries;
         try {
             //noinspection BlockingMethodInNonBlockingContext
-            entries = new String(Files.readAllBytes(Paths.get(Main.basePath)));
+            entries = new String(Files.readAllBytes(Paths.get(basePath)));
         } catch (Exception e) {
             return Maybe.error(e);
         }

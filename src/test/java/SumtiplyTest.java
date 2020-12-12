@@ -1,11 +1,9 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.util.AoC2020.Sumtiply;
+import org.util.AoC2020.D01.Sumtiply;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class SumtiplyTest {
     int[] baseList = {1721,
@@ -15,7 +13,7 @@ public class SumtiplyTest {
             675,
             1456};
     @Test
-    void BaseListCorrrectesults() {
+    void BaseListCorrrectResults() {
         List<Integer> result = Sumtiply.GetSumOf2020(baseList);
         Assert.assertEquals(List.of(1721, 299), result);
     }
@@ -36,5 +34,11 @@ public class SumtiplyTest {
     void TestSumtiplyOfNEmpty() {
         Optional<Integer> result = Sumtiply.Sumtiplication(new int[] {});
         Assert.assertEquals(Optional.empty(), result);
+    }
+
+    @Test
+    void SumtiplicationOf3Numbers241861950() {
+        Optional<Integer> result = Sumtiply.SumtiplicationOf(baseList, 3);
+        Assert.assertEquals(Optional.of(241861950), result);
     }
 }
