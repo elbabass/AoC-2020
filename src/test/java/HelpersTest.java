@@ -6,8 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.util.AoC2020.D02.PasswordPolicy;
 import org.util.AoC2020.Helpers;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class HelpersTest {
-    int[] baseList = {1721,
+    final int[] baseList = {1721,
             979,
             366,
             299,
@@ -29,13 +32,29 @@ public class HelpersTest {
 
     @Test
     void ConvertedIntInputsFromFile() {
-        int[] actual = Helpers.getConvertedInputs("d01-tests.txt", Integer::parseInt);
+        int[] actual = Helpers.getConvertedIntInputs("d01-tests.txt", Integer::parseInt);
         Assert.assertArrayEquals(baseList, actual);
+    }
+
+    @Test
+    void ConvertedPolicyAndPasswordInputsFromFile() {
+        List<Pair<PasswordPolicy, String>> expected = Arrays.asList(
+                Pair.with(new PasswordPolicy(1, 3, 'a'), "abcde"),
+                Pair.with(new PasswordPolicy(1, 3, 'b'), "cdefg"),
+                Pair.with(new PasswordPolicy(2, 9, 'c'), "ccccccccc")
+        );
+
+        List<Pair<PasswordPolicy, String>> actual = Helpers.getConvertedPolicyAndPasswordInputs(
+                "d02-tests.txt",
+                Helpers::passwordPolicyAndStringFromEntry
+        );
+
+        Assert.assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Property
     void PoliciesAndPasswordCanBeConvertedBack(
-            @ForAll("PasswordPolicy") PasswordPolicy passwordPolicy,
+            @ForAll PasswordPolicy passwordPolicy,
             @ForAll @LowerChars String password
     ) {
         Pair<PasswordPolicy, String> expected = Pair.with(passwordPolicy, password);
@@ -48,14 +67,5 @@ public class HelpersTest {
         Assert.assertEquals(expected.getValue0().getRangeMax(), actual.getValue0().getRangeMax());
         Assert.assertEquals(expected.getValue0().getRangeMin(), actual.getValue0().getRangeMin());
         Assert.assertEquals(expected.getValue1(), actual.getValue1());
-    }
-
-    @Provide
-    Arbitrary<PasswordPolicy> PasswordPolicy() {
-        Arbitrary<Integer> min =  Arbitraries.integers().between(1, 9);
-        Arbitrary<Integer> max =  Arbitraries.integers().between(1, 9);
-        Arbitrary<Character> letter = Arbitraries.chars().range('a', 'z');
-
-        return Combinators.combine(min, max, letter).as(PasswordPolicy::new);
     }
 }

@@ -1,6 +1,6 @@
 package org.util.AoC2020.D02;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.Objects;
 
 public class PasswordPolicy {
     private final Integer rangeMin;
@@ -23,5 +23,24 @@ public class PasswordPolicy {
 
     public Character getCharacter() {
         return character;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PasswordPolicy)) {
+            return false;
+        }
+        PasswordPolicy passwordPolicy = (PasswordPolicy) o;
+        return (this.character == passwordPolicy.getCharacter()) &&
+                (Objects.equals(this.rangeMin, passwordPolicy.getRangeMin())) &&
+                (Objects.equals(this.rangeMax, passwordPolicy.getRangeMax()));
+    }
+
+    @Override
+    public String toString() {
+        return "" + this.rangeMin + "-" + this.rangeMax + " " + this.character;
     }
 }

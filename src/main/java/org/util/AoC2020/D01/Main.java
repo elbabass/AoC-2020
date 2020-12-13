@@ -2,7 +2,6 @@ package org.util.AoC2020.D01;
 
 import org.util.AoC2020.Helpers;
 
-import java.io.File;
 import java.util.Optional;
 
 public class Main {

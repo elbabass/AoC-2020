@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SumtiplyTest {
-    int[] baseList = {
+    final int[] baseList = {
             1721,
             979,
             366,

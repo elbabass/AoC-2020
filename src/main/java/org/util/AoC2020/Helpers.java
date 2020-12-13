@@ -10,7 +10,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Helpers {
@@ -32,15 +36,29 @@ public class Helpers {
         return Maybe.just(entries);
     }
 
-    public static int[] getConvertedInputs(String fileName, ToIntFunction<? super String> mapper) {
+    private static Stream<String> getStringStreamFromFile(String fileName) {
         final Path path = Paths.get(inputBasePath + fileName);
+        final Stream<String> lines;
         try {
-            final Stream<String> lines = Files.lines(path);
-            return lines.mapToInt(mapper).toArray();
+            lines = Files.lines(path);
+            return lines;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static int[] getConvertedIntInputs(String fileName, ToIntFunction<? super String> mapper) {
+        final Stream<String> lines = getStringStreamFromFile(fileName);
+        assert lines != null;
+        return lines.mapToInt(mapper).toArray();
+    }
+
+    public static List<Pair<PasswordPolicy, String>> getConvertedPolicyAndPasswordInputs(
+            String fileName,
+            Function<? super String, ? extends Pair<PasswordPolicy, String>> mapper
+    ) {
+        return Objects.requireNonNull(getStringStreamFromFile(fileName)).map(mapper).collect(Collectors.toList());
     }
 
     public static Pair<PasswordPolicy, String> passwordPolicyAndStringFromEntry(String input) {
