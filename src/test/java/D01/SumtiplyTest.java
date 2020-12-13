@@ -1,3 +1,5 @@
+package D01;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.util.AoC2020.D01.Sumtiply;
@@ -6,12 +8,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class SumtiplyTest {
-    int[] baseList = {1721,
+    int[] baseList = {
+            1721,
             979,
             366,
             299,
             675,
-            1456};
+            1456
+    };
     @Test
     void BaseListCorrrectResults() {
         List<Integer> result = Sumtiply.GetSumOf2020(baseList);

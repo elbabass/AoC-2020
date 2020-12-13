@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.Optional;
 
 public class Main {
-    static final String basePath = System.getProperty("user.dir") + File.separator + "entries.txt";
+    static final String basePath = "d01-inputs.txt";
     public static void main(String[] args) {
         Helpers.getEntry(basePath)
                 .doOnSuccess((str) -> {
