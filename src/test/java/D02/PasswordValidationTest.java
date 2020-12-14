@@ -108,12 +108,12 @@ public class PasswordValidationTest {
         final char policyCharacter = passwordPolicy.getCharacter();
         char firstChar = Character.toUpperCase(policyCharacter);
         char lastChar = Character.toUpperCase(policyCharacter);
-        if (putCharacterPolicy == MAX) {
+
+        if ((putCharacterPolicy == MAX)||(putCharacterPolicy == BOTH)) {
             lastChar = policyCharacter;
         }
-        if (putCharacterPolicy == BOTH) {
+        if ((putCharacterPolicy == MIN)||(putCharacterPolicy == BOTH)) {
             firstChar = policyCharacter;
-            lastChar = policyCharacter;
         }
         return passwordBase.substring(0, passwordPolicy.getRangeMin() - 1)
                 + firstChar
