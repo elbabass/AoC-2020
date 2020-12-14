@@ -12,6 +12,6 @@ public class ValidPasswordPolicyConfigurator extends ArbitraryConfiguratorBase {
     }
 
     public Arbitrary<PasswordPolicy> configure(Arbitrary<PasswordPolicy> arbitrary, ValidPasswordPolicy validPasswordPolicy) {
-        return arbitrary.filter((passwordPolicy -> passwordPolicy.getRangeMin() <= passwordPolicy.getRangeMax()));
+        return arbitrary.filter((passwordPolicy -> passwordPolicy.getRangeMin() < passwordPolicy.getRangeMax()));
     }
 }

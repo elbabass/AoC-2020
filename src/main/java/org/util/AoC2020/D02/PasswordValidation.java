@@ -5,17 +5,25 @@ import org.javatuples.Pair;
 import java.util.List;
 
 public class PasswordValidation {
+    @Deprecated
     public static boolean validate(PasswordPolicy passwordPolicy, String password) {
-        final long countRequiredCharacter = password.chars().filter((c) -> c == passwordPolicy.getCharacter()).count();
-        return countRequiredCharacter >= passwordPolicy.getRangeMin()
-                && countRequiredCharacter <= passwordPolicy.getRangeMax();
+        return validate(passwordPolicy, password, new PasswordRuleWithRange());
     }
 
+    public static boolean validate(PasswordPolicy passwordPolicy, String password, PasswordRule passwordRule) {
+        return passwordRule.validate(passwordPolicy, password);
+    }
+
+    private static boolean validate(Pair<PasswordPolicy, String> passwordPolicyStringPair, PasswordRule passwordRule) {
+        return validate(passwordPolicyStringPair.getValue0(), passwordPolicyStringPair.getValue1(), passwordRule);
+    }
+
+    @Deprecated
     public static long countFromList(List<Pair<PasswordPolicy, String>> passwordsToCheck) {
-        return passwordsToCheck.stream().filter(PasswordValidation::validate).count();
+        return countFromList(passwordsToCheck, new PasswordRuleWithRange());
     }
 
-    private static boolean validate(Pair<PasswordPolicy, String> passwordPolicyStringPair) {
-        return validate(passwordPolicyStringPair.getValue0(), passwordPolicyStringPair.getValue1());
+    public static long countFromList(List<Pair<PasswordPolicy, String>> passwordsToCheck, PasswordRule passwordRule) {
+        return passwordsToCheck.stream().filter(passwordPolicyStringPair -> validate(passwordPolicyStringPair, passwordRule)).count();
     }
 }
