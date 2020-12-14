@@ -7,6 +7,7 @@ import java.util.Optional;
 public class Main {
     static final String basePath = "d01-inputs.txt";
     public static void main(String[] args) {
+        //noinspection deprecation
         Helpers.getEntry(basePath)
                 .doOnSuccess((str) -> {
                     int[] listOfInput = Helpers.listOfIntFromText(str);

@@ -25,6 +25,7 @@ public class Helpers {
         return Stream.of(strNums).mapToInt(Integer::parseInt).toArray();
     }
 
+    @Deprecated
     public static Maybe<String> getEntry(String basePath) {
         String entries;
         try {
@@ -36,7 +37,7 @@ public class Helpers {
         return Maybe.just(entries);
     }
 
-    private static Stream<String> getStringStreamFromFile(String fileName) {
+    public static Stream<String> streamedStringsFromFile(String fileName) {
         final Path path = Paths.get(inputBasePath + fileName);
         final Stream<String> lines;
         try {
@@ -49,7 +50,7 @@ public class Helpers {
     }
 
     public static int[] getConvertedIntInputs(String fileName, ToIntFunction<? super String> mapper) {
-        final Stream<String> lines = getStringStreamFromFile(fileName);
+        final Stream<String> lines = streamedStringsFromFile(fileName);
         assert lines != null;
         return lines.mapToInt(mapper).toArray();
     }
@@ -58,7 +59,7 @@ public class Helpers {
             String fileName,
             Function<? super String, ? extends Pair<PasswordPolicy, String>> mapper
     ) {
-        return Objects.requireNonNull(getStringStreamFromFile(fileName)).map(mapper).collect(Collectors.toList());
+        return Objects.requireNonNull(streamedStringsFromFile(fileName)).map(mapper).collect(Collectors.toList());
     }
 
     public static Pair<PasswordPolicy, String> passwordPolicyAndStringFromEntry(String input) {
