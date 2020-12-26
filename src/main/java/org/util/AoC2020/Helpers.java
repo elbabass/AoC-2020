@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.Stack;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -73,4 +74,24 @@ public class Helpers {
         return Pair.with(passwordPolicy, policyAndPasswordStr[1].trim());
     }
 
+    public static List<String> parseParagraphsAsStrings(String filename) {
+        StringBuilder currentPassport = new StringBuilder();
+        Stack<String> passports = new Stack<>();
+        String separator = "";
+        for (String line : Objects.requireNonNull(streamedStringsFromFile(filename)).collect(Collectors.toList())) {
+            if (line.isEmpty()) {
+                passports.add(currentPassport.toString());
+                currentPassport = new StringBuilder();
+                separator = "";
+            }
+            else {
+                currentPassport.append(separator).append(line);
+                separator = " ";
+            }
+        }
+        if (!currentPassport.isEmpty()) {
+            passports.add(currentPassport.toString());
+        }
+        return passports;
+    }
 }

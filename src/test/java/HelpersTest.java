@@ -8,6 +8,7 @@ import org.util.AoC2020.Helpers;
 
 import java.util.Arrays;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HelpersTest {
     final int[] baseList = {1721,
@@ -67,5 +68,22 @@ public class HelpersTest {
         Assert.assertEquals(expected.getValue0().getRangeMax(), actual.getValue0().getRangeMax());
         Assert.assertEquals(expected.getValue0().getRangeMin(), actual.getValue0().getRangeMin());
         Assert.assertEquals(expected.getValue1(), actual.getValue1());
+    }
+
+    @Test
+    void StringLoaderAutomaton() {
+        List<String> expected = Arrays.asList(
+                "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd" +
+                " byr:1937 iyr:2017 cid:147 hgt:183cm",
+                "iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884" +
+                        " hcl:#cfa07d byr:1929",
+                "hcl:#ae17e1 iyr:2013" +
+                        " eyr:2024" +
+                        " ecl:brn pid:760753108 byr:1931" +
+                        " hgt:179cm",
+                "hcl:#cfa07d eyr:2025 pid:166559648 " +
+                        "iyr:2011 ecl:brn hgt:59in");
+        List<String> actual = Helpers.parseParagraphsAsStrings("d04-tests.txt");
+        assertThat(expected).isEqualTo(actual);
     }
 }
