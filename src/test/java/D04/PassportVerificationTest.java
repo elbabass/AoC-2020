@@ -1,6 +1,7 @@
 package D04;
 
 import net.jqwik.api.*;
+import net.jqwik.api.arbitraries.StringArbitrary;
 import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.LowerChars;
 import net.jqwik.api.constraints.StringLength;
@@ -101,8 +102,7 @@ public class PassportVerificationTest {
                 .as(
                         (hairColor, eyeColor) -> {
                             Passport passport = new Passport();
-                            passport.setHairColor(hairColor);
-                            passport.setEyeColor(eyeColor);
+                            addColorFields(hairColor, eyeColor, passport);
                             return passport;
                         });
 
@@ -113,7 +113,7 @@ public class PassportVerificationTest {
         Arbitrary<Height> heights = getHeightArbitrary();
         return heights.map(height -> {
             Passport passport = new Passport();
-            passport.setHeight(height);
+            addHeightField(height, passport);
             return passport;
         });
     }
@@ -128,63 +128,9 @@ public class PassportVerificationTest {
                 .combine(birthYears, issueYears, expirationYears)
                 .as((birthYear, issueYear, expirationYear) -> {
                     Passport passport = new Passport();
-                    passport.setBirthYear(new BirthYear(birthYear));
-                    passport.setIssueYear(new IssueYear(issueYear));
-                    passport.setExpirationYear(new ExpirationYear(expirationYear));
+                    addYearFields(birthYear, issueYear, expirationYear, passport);
                     return passport;
                 });
-    }
-
-    @Provide
-    Arbitrary<Passport> noCountry() {
-        Arbitrary<Integer> birthYears = getYearIntArbitrary();
-        Arbitrary<Integer> issueYears = getYearIntArbitrary();
-        Arbitrary<Integer> expirationYears = getYearIntArbitrary();
-        Arbitrary<Height> heights = getHeightArbitrary();
-        Arbitrary<HairColor> hairColors = getHairColorArbitrary();
-        Arbitrary<EyeColor> eyeColors = getEyeColorArbitrary();
-        Arbitrary<PassportId> passportIds = getPassportIdArbitrary();
-        return Combinators
-                .combine(birthYears, issueYears, expirationYears, heights, hairColors, eyeColors, passportIds)
-                .as(
-                        (birthYear, issueYear, expirationYear, height, hairColor, eyeColor, passportId) -> {
-                            Passport passport = new Passport();
-                            passport.setBirthYear(new BirthYear(birthYear));
-                            passport.setIssueYear(new IssueYear(issueYear));
-                            passport.setExpirationYear(new ExpirationYear(expirationYear));
-                            passport.setHeight(height);
-                            passport.setHairColor(hairColor);
-                            passport.setEyeColor(eyeColor);
-                            passport.setPassportId(passportId);
-                            return passport;
-                        });
-    }
-
-    @Provide
-    Arbitrary<Passport> fullPassport() {
-        Arbitrary<Integer> birthYears = getYearIntArbitrary();
-        Arbitrary<Integer> issueYears = getYearIntArbitrary();
-        Arbitrary<Integer> expirationYears = getYearIntArbitrary();
-        Arbitrary<Height> heights = getHeightArbitrary();
-        Arbitrary<HairColor> hairColors = getHairColorArbitrary();
-        Arbitrary<EyeColor> eyeColors = getEyeColorArbitrary();
-        Arbitrary<PassportId> passportIds = getPassportIdArbitrary();
-        Arbitrary<CountryId> countryIds = getCountryIdArbitrary();
-        return Combinators
-                .combine(birthYears, issueYears, expirationYears, heights, hairColors, eyeColors, passportIds, countryIds)
-                .as(
-                        (birthYear, issueYear, expirationYear, height, hairColor, eyeColor, passportId, countryId) -> {
-                            Passport passport = new Passport();
-                            passport.setBirthYear(new BirthYear(birthYear));
-                            passport.setIssueYear(new IssueYear(issueYear));
-                            passport.setExpirationYear(new ExpirationYear(expirationYear));
-                            passport.setHeight(height);
-                            passport.setHairColor(hairColor);
-                            passport.setEyeColor(eyeColor);
-                            passport.setPassportId(passportId);
-                            passport.setCountryId(countryId);
-                            return passport;
-                        });
     }
 
     @Provide
@@ -196,10 +142,62 @@ public class PassportVerificationTest {
                 .as(
                         (passportId, countryId) -> {
                             Passport passport = new Passport();
-                            passport.setPassportId(passportId);
-                            passport.setCountryId(countryId);
+                            addIdsFields(passportId, countryId, passport);
                             return passport;
                         });
+    }
+
+    @Provide
+    Arbitrary<Passport> noCountry() {
+        return getPassportArbitrary(true);
+    }
+
+    @Provide
+    Arbitrary<Passport> fullPassport() {
+        return getPassportArbitrary(false);
+    }
+
+    private Arbitrary<Passport> getPassportArbitrary(boolean noCountry) {
+        Arbitrary<Integer> birthYears = getYearIntArbitrary();
+        Arbitrary<Integer> issueYears = getYearIntArbitrary();
+        Arbitrary<Integer> expirationYears = getYearIntArbitrary();
+        Arbitrary<Height> heights = getHeightArbitrary();
+        Arbitrary<HairColor> hairColors = getHairColorArbitrary();
+        Arbitrary<EyeColor> eyeColors = getEyeColorArbitrary();
+        Arbitrary<PassportId> passportIds = getPassportIdArbitrary();
+        Arbitrary<CountryId> countryIds = getCountryIdArbitrary();
+
+        return Combinators
+                .combine(birthYears, issueYears, expirationYears, heights, hairColors, eyeColors, passportIds, countryIds)
+                .as(
+                        (birthYear, issueYear, expirationYear, height, hairColor, eyeColor, passportId, countryId) -> {
+                            Passport passport = new Passport();
+                            addYearFields(birthYear, issueYear, expirationYear, passport);
+                            addHeightField(height, passport);
+                            addColorFields(hairColor, eyeColor, passport);
+                            addIdsFields(passportId, (noCountry) ? null : countryId, passport);
+                            return passport;
+                        });
+    }
+
+    private void addColorFields(HairColor hairColor, EyeColor eyeColor, Passport passport) {
+        passport.setHairColor(hairColor);
+        passport.setEyeColor(eyeColor);
+    }
+
+    private void addHeightField(Height height, Passport passport) {
+        passport.setHeight(height);
+    }
+
+    private void addYearFields(Integer birthYear, Integer issueYear, Integer expirationYear, Passport passport) {
+        passport.setBirthYear(new BirthYear(birthYear));
+        passport.setIssueYear(new IssueYear(issueYear));
+        passport.setExpirationYear(new ExpirationYear(expirationYear));
+    }
+
+    private void addIdsFields(PassportId passportId, CountryId countryId, Passport passport) {
+        passport.setPassportId(passportId);
+        if (countryId != null) passport.setCountryId(countryId);
     }
 
     private Arbitrary<CountryId> getCountryIdArbitrary() {
@@ -228,20 +226,20 @@ public class PassportVerificationTest {
     }
 
     private Arbitrary<EyeColor> getEyeColorArbitrary() {
-        return Arbitraries
-                .strings()
-                .withChars('1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
-                .ofLength(6)
+        return getHexColorStringArbitrary()
                 .map(s -> new EyeColor("#" + s));
     }
 
-
     private Arbitrary<HairColor> getHairColorArbitrary() {
+        return getHexColorStringArbitrary()
+                .map(s -> new HairColor("#" + s));
+    }
+
+    private StringArbitrary getHexColorStringArbitrary() {
         return Arbitraries
                 .strings()
                 .withChars('1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
-                .ofLength(6)
-                .map(s -> new HairColor("#" + s));
+                .ofLength(6);
     }
 
 }

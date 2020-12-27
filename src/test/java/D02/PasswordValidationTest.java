@@ -8,7 +8,7 @@ import net.jqwik.api.constraints.StringLength;
 import org.apache.commons.lang3.StringUtils;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.util.AoC2020.D02.*;
 import org.util.AoC2020.Helpers;
@@ -31,7 +31,7 @@ public class PasswordValidationTest {
         final String password = "abcde";
         final PasswordRule passwordRule = new PasswordRuleWithRange();
         final boolean passwordIsValid = PasswordValidation.validate(passwordPolicy, password, passwordRule);
-        Assert.assertTrue(passwordIsValid);
+        Assertions.assertTrue(passwordIsValid);
     }
 
     @Property
@@ -39,7 +39,7 @@ public class PasswordValidationTest {
             @ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy
     ) {
         String password = StringUtils.repeat(passwordPolicy.getCharacter(), passwordPolicy.getRangeMin());
-        Assert.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
+        Assertions.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
     }
 
     @Property
@@ -47,7 +47,7 @@ public class PasswordValidationTest {
             @ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy
     ) {
         String password = StringUtils.repeat(passwordPolicy.getCharacter(), passwordPolicy.getRangeMax());
-        Assert.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
+        Assertions.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
     }
 
     @Property
@@ -55,7 +55,7 @@ public class PasswordValidationTest {
             @ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy
     ) {
         String password = StringUtils.repeat(passwordPolicy.getCharacter(), passwordPolicy.getRangeMax() + 1);
-        Assert.assertFalse(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
+        Assertions.assertFalse(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
     }
 
     @Property
@@ -63,14 +63,14 @@ public class PasswordValidationTest {
             @ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy
     ) {
         String password = StringUtils.repeat(passwordPolicy.getCharacter(), passwordPolicy.getRangeMin() - 1);
-        Assert.assertFalse(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
+        Assertions.assertFalse(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
     }
 
     @Test
     void ThereAreExactly2ValidPasswordsInThisListWithInjectedRule() {
         final long expected = 2;
         final PasswordRule passwordRule = new PasswordRuleWithRange();
-        Assert.assertEquals(expected, PasswordValidation.countFromList(passwordsToCheck, passwordRule));
+        Assertions.assertEquals(expected, PasswordValidation.countFromList(passwordsToCheck, passwordRule));
     }
 
     @Property
@@ -78,8 +78,7 @@ public class PasswordValidationTest {
             @ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy,
             @ForAll @LowerChars @StringLength(value = 10) String passwordBase
     ) {
-        String password = generatePassword(passwordPolicy, passwordBase, MIN);
-        Assert.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithPositions()));
+        assertPasswordIsValidWithValue(passwordPolicy, passwordBase, MIN);
     }
 
     @Property
@@ -87,8 +86,12 @@ public class PasswordValidationTest {
             @ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy,
             @ForAll @LowerChars @StringLength(value = 10) String passwordBase
     ) {
-        String password = generatePassword(passwordPolicy, passwordBase, MAX);
-        Assert.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithPositions()));
+        assertPasswordIsValidWithValue(passwordPolicy, passwordBase, MAX);
+    }
+
+    private void assertPasswordIsValidWithValue(@ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy, @ForAll @LowerChars @StringLength(value = 10) String passwordBase, int edge) {
+        String password = generatePassword(passwordPolicy, passwordBase, edge);
+        Assertions.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithPositions()));
     }
 
     @Property
@@ -97,7 +100,7 @@ public class PasswordValidationTest {
             @ForAll @LowerChars @StringLength(value = 10) String passwordBase
     ) {
         String password = generatePassword(passwordPolicy, passwordBase, BOTH);
-        Assert.assertFalse(
+        Assertions.assertFalse(
                 PasswordValidation.validate(
                         passwordPolicy,
                         password, new PasswordRuleWithPositions()));
@@ -109,16 +112,19 @@ public class PasswordValidationTest {
         char firstChar = Character.toUpperCase(policyCharacter);
         char lastChar = Character.toUpperCase(policyCharacter);
 
-        if ((putCharacterPolicy == MAX)||(putCharacterPolicy == BOTH)) {
-            lastChar = policyCharacter;
-        }
-        if ((putCharacterPolicy == MIN)||(putCharacterPolicy == BOTH)) {
-            firstChar = policyCharacter;
-        }
+        lastChar = getSpecificChar(putCharacterPolicy, policyCharacter, lastChar, MAX);
+        firstChar = getSpecificChar(putCharacterPolicy, policyCharacter, firstChar, MIN);
         return passwordBase.substring(0, passwordPolicy.getRangeMin() - 1)
                 + firstChar
                 + passwordBase.substring(passwordPolicy.getRangeMin(), passwordPolicy.getRangeMax() - 1)
                 + lastChar
                 + passwordBase.substring(passwordPolicy.getRangeMax());
+    }
+
+    private char getSpecificChar(int putCharacterPolicy, char policyCharacter, char defaultChar, int edge) {
+        if ((putCharacterPolicy == edge) || (putCharacterPolicy == BOTH)) {
+            return policyCharacter;
+        }
+        return defaultChar;
     }
 }

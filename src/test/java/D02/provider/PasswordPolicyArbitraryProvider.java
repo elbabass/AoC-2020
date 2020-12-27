@@ -12,26 +12,30 @@ import java.util.Collections;
 import java.util.Set;
 
 public class PasswordPolicyArbitraryProvider implements ArbitraryProvider {
-    @Provide
-    public Arbitrary<PasswordPolicy> PasswordPolicy() {
-        Arbitrary<Integer> min =  Arbitraries.integers().between(1, 9);
-        Arbitrary<Integer> max =  Arbitraries.integers().between(1, 9);
-        Arbitrary<Character> letter = Arbitraries.chars().range('a', 'z');
-
-        return Combinators.combine(min, max, letter).as(PasswordPolicy::new);
-    }
-
     @Override
     public boolean canProvideFor(TypeUsage typeUsage) {
         return typeUsage.isOfType(PasswordPolicy.class);
     }
 
+    @Provide
+    public Arbitrary<PasswordPolicy> PasswordPolicy() {
+        return getPasswordPolicyArbitrary();
+    }
+
     @Override
     public Set<Arbitrary<?>> provideFor(TypeUsage typeUsage, SubtypeProvider subtypeProvider) {
-        Arbitrary<Integer> min =  Arbitraries.integers().between(1, 9);
-        Arbitrary<Integer> max =  Arbitraries.integers().between(1, 9);
+        return Collections.singleton(getPasswordPolicyArbitrary());
+    }
+
+    private Arbitrary<PasswordPolicy> getPasswordPolicyArbitrary() {
+        Arbitrary<Integer> min = Arbitraries.integers().between(1, 9);
+        Arbitrary<Integer> max = Arbitraries.integers().between(1, 9);
         Arbitrary<Character> letter = Arbitraries.chars().range('a', 'z');
 
-        return Collections.singleton(Combinators.combine(min, max, letter).as(PasswordPolicy::new));
+        return getAsPasswordPolicy(min, max, letter);
+    }
+
+    private Arbitrary<PasswordPolicy> getAsPasswordPolicy(Arbitrary<Integer> min, Arbitrary<Integer> max, Arbitrary<Character> letter) {
+        return Combinators.combine(min, max, letter).as(PasswordPolicy::new);
     }
 }
