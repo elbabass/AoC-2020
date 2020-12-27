@@ -1,9 +1,11 @@
 package org.util.AoC2020.D04;
 
+import org.util.AoC2020.D04.Passport.Passport;
+
 import java.util.Arrays;
 import java.util.List;
 
-import static org.util.AoC2020.D04.PassportField.*;
+import static org.util.AoC2020.D04.Passport.Fields.PassportField.*;
 
 public class PassportValidation {
     private static final String[] requiredFields = new String[]{

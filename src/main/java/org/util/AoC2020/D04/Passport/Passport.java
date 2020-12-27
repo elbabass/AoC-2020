@@ -1,9 +1,12 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport;
+
+import org.util.AoC2020.D04.Passport.Fields.*;
+import org.util.AoC2020.D04.Passport.Fields.PassportId;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static org.util.AoC2020.D04.PassportField.*;
+import static org.util.AoC2020.D04.Passport.Fields.PassportField.*;
 
 public final class Passport {
     protected final BirthYear birthYear;
@@ -14,17 +17,6 @@ public final class Passport {
     protected final EyeColor eyeColor;
     protected final PassportId passportId;
     protected final CountryId countryId;
-
-    public Passport() {
-        birthYear = new BirthYear();
-        issueYear = new IssueYear();
-        expirationYear = new ExpirationYear();
-        height = new Height();
-        hairColor = new HairColor();
-        eyeColor = new EyeColor();
-        passportId = new PassportId();
-        countryId = new CountryId();
-    }
 
     public Passport(String stringifyPassword) {
         MutablePassport mutablePassport = new MutablePassport();

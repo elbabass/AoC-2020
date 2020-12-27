@@ -7,6 +7,8 @@ import net.jqwik.api.constraints.LowerChars;
 import net.jqwik.api.constraints.StringLength;
 import org.junit.jupiter.api.Assertions;
 import org.util.AoC2020.D04.*;
+import org.util.AoC2020.D04.Passport.Fields.*;
+import org.util.AoC2020.D04.Passport.Passport;
 import org.util.AoC2020.Helpers;
 
 import java.util.List;

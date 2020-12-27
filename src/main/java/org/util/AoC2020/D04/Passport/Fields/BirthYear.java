@@ -1,4 +1,4 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport.Fields;
 
 public class BirthYear extends PassportField<Integer> {
     public BirthYear() {

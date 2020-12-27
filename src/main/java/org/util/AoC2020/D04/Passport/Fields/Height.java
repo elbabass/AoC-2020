@@ -1,4 +1,4 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport.Fields;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +25,7 @@ public class Height extends PassportField<Number> {
     }
 
     @Override
-    String getKeyName() {
+    public String getKeyName() {
         return HEIGHT_KEY;
     }
 }

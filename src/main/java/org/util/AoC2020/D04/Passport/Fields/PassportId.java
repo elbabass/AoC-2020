@@ -1,7 +1,4 @@
-package org.util.AoC2020.D04;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+package org.util.AoC2020.D04.Passport.Fields;
 
 public class PassportId extends PassportField<String> {
     public PassportId() {
@@ -17,7 +14,7 @@ public class PassportId extends PassportField<String> {
     }
 
     @Override
-    String getKeyName() {
+    public String getKeyName() {
         return PASSWORD_ID_KEY;
     }
 }

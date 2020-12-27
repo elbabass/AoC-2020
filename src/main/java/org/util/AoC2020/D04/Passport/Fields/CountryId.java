@@ -1,4 +1,4 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport.Fields;
 
 public class CountryId extends PassportField<Integer> {
     public CountryId() {
@@ -14,7 +14,7 @@ public class CountryId extends PassportField<Integer> {
     }
 
     @Override
-    String getKeyName() {
+    public String getKeyName() {
         return COUNTRY_ID_KEY;
     }
 }

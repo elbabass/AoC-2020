@@ -1,6 +1,9 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport;
 
-import static org.util.AoC2020.D04.PassportField.*;
+import org.util.AoC2020.D04.Passport.Fields.*;
+import org.util.AoC2020.D04.Passport.Fields.PassportId;
+
+import static org.util.AoC2020.D04.Passport.Fields.PassportField.*;
 
 public class MutablePassport {
     public BirthYear birthYear = new BirthYear();

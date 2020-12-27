@@ -1,4 +1,4 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport.Fields;
 
 public class EyeColor extends PassportField<String> {
     public EyeColor(String hexadecimalColor) {
@@ -10,7 +10,7 @@ public class EyeColor extends PassportField<String> {
     }
 
     @Override
-    String getKeyName() {
+    public String getKeyName() {
         return EYE_COLOR_KEY;
     }
 

@@ -1,4 +1,4 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport.Fields;
 
 public class IssueYear extends PassportField<Integer> {
     public IssueYear() {
@@ -14,7 +14,7 @@ public class IssueYear extends PassportField<Integer> {
     }
 
     @Override
-    String getKeyName() {
+    public String getKeyName() {
         return ISSUE_YEAR_KEY;
     }
 }

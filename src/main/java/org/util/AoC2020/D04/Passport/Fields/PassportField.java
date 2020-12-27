@@ -1,4 +1,4 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport.Fields;
 
 import java.util.Objects;
 
@@ -30,9 +30,9 @@ public abstract class PassportField<T> {
         }
     }
 
-    abstract String getKeyName();
+    public abstract String getKeyName();
 
-    boolean hasValue() {
+    public boolean hasValue() {
         return assigned;
     }
 
@@ -40,7 +40,7 @@ public abstract class PassportField<T> {
         return value;
     }
 
-    String getPassportString() {
+    public String getPassportString() {
         return hasValue() ? getKeyName() + ":" + value : "";
     }
 

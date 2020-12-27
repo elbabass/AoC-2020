@@ -1,13 +1,15 @@
-import net.jqwik.api.*;
+import net.jqwik.api.ForAll;
+import net.jqwik.api.Property;
 import net.jqwik.api.constraints.LowerChars;
 import org.javatuples.Pair;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.util.AoC2020.D02.PasswordPolicy;
 import org.util.AoC2020.Helpers;
 
 import java.util.Arrays;
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HelpersTest {
@@ -28,13 +30,13 @@ public class HelpersTest {
                 675
                 1456""";
         int[] actual = Helpers.listOfIntFromText(baseString);
-        Assert.assertArrayEquals(baseList, actual);
+        Assertions.assertArrayEquals(baseList, actual);
     }
 
     @Test
     void ConvertedIntInputsFromFile() {
         int[] actual = Helpers.getConvertedIntInputs("d01-tests.txt", Integer::parseInt);
-        Assert.assertArrayEquals(baseList, actual);
+        Assertions.assertArrayEquals(baseList, actual);
     }
 
     @Test
@@ -50,7 +52,7 @@ public class HelpersTest {
                 Helpers::passwordPolicyAndStringFromEntry
         );
 
-        Assert.assertArrayEquals(expected.toArray(), actual.toArray());
+        Assertions.assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Property
@@ -64,17 +66,17 @@ public class HelpersTest {
                 + passwordPolicy.getCharacter() + ": "
                 + password;
         Pair<PasswordPolicy, String> actual = Helpers.passwordPolicyAndStringFromEntry(input);
-        Assert.assertEquals(expected.getValue0().getCharacter(), actual.getValue0().getCharacter());
-        Assert.assertEquals(expected.getValue0().getRangeMax(), actual.getValue0().getRangeMax());
-        Assert.assertEquals(expected.getValue0().getRangeMin(), actual.getValue0().getRangeMin());
-        Assert.assertEquals(expected.getValue1(), actual.getValue1());
+        Assertions.assertEquals(expected.getValue0().getCharacter(), actual.getValue0().getCharacter());
+        Assertions.assertEquals(expected.getValue0().getRangeMax(), actual.getValue0().getRangeMax());
+        Assertions.assertEquals(expected.getValue0().getRangeMin(), actual.getValue0().getRangeMin());
+        Assertions.assertEquals(expected.getValue1(), actual.getValue1());
     }
 
     @Test
     void StringLoaderAutomaton() {
         List<String> expected = Arrays.asList(
                 "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd" +
-                " byr:1937 iyr:2017 cid:147 hgt:183cm",
+                        " byr:1937 iyr:2017 cid:147 hgt:183cm",
                 "iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884" +
                         " hcl:#cfa07d byr:1929",
                 "hcl:#ae17e1 iyr:2013" +

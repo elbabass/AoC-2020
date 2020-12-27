@@ -1,4 +1,4 @@
-package org.util.AoC2020.D04;
+package org.util.AoC2020.D04.Passport.Fields;
 
 public class HairColor extends PassportField<String> {
     public HairColor(String hexadecimalColor) {
@@ -10,7 +10,7 @@ public class HairColor extends PassportField<String> {
     }
 
     @Override
-    String getKeyName() {
+    public String getKeyName() {
         return HAIR_COLOR_KEY;
     }
 
