@@ -21,7 +21,7 @@ public class PassportValidation {
 
     public static long countValidPassports(List<String> passportList) {
         return passportList.stream().filter(line -> {
-            final Passport passport = Passport.of(line);
+            final Passport passport = new Passport(line);
             return isValid(passport);
         }).count();
     }
