@@ -5,6 +5,7 @@ import net.jqwik.api.arbitraries.StringArbitrary;
 import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.LowerChars;
 import net.jqwik.api.constraints.StringLength;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.util.AoC2020.D04.*;
 import org.util.AoC2020.D04.Passport.Fields.*;
@@ -64,8 +65,9 @@ public class Day4PassportTest {
                 @ForAll @IntRange(min = 80, max = 250) int value,
                 @ForAll @StringLength(2) @LowerChars String unit
         ) {
-            Height height = (Height) Height.of("" + value + unit);
-            assertThat(value).isEqualTo(height.getValue());
+            final String heightString = "" + value + unit;
+            Height height = (Height) Height.of(heightString);
+            assertThat(heightString).isEqualTo(height.toString());
         }
     }
 
@@ -99,10 +101,9 @@ public class Day4PassportTest {
     }
 
     @Provide
-    Arbitrary<String> height() {
+    Arbitrary<Height> heightCm() {
         Arbitrary<Integer> values = Arbitraries.integers().between(80, 250);
-        Arbitrary<String> units = Arbitraries.of("in", "cm");
-        return Combinators.combine(values, units).as((value, unit) -> value + unit);
+        return values.map(integer -> "" + integer + "cm").map(s -> (Height) Height.of(s));
     }
 
     @Provide
@@ -226,25 +227,25 @@ public class Day4PassportTest {
         return Arbitraries
                 .integers()
                 .between(80, 250)
-                .map(Height::new);
+                .map(i -> new Height(Pair.with(i, "cm")));
     }
 
     private Arbitrary<BirthYear> getBirthYearArbitrary() {
-        return getYearIntArbitrary().map(BirthYear::new);
+        return getYearIntArbitrary(1920, 2002).map(BirthYear::new);
     }
 
     private Arbitrary<IssueYear> getIssueYearArbitrary() {
-        return getYearIntArbitrary().map(IssueYear::new);
+        return getYearIntArbitrary(2010, 2020).map(IssueYear::new);
     }
 
     private Arbitrary<ExpirationYear> getExpirationYearArbitrary() {
-        return getYearIntArbitrary().map(ExpirationYear::new);
+        return getYearIntArbitrary(2020, 2030).map(ExpirationYear::new);
     }
 
-    private Arbitrary<Integer> getYearIntArbitrary() {
+    private Arbitrary<Integer> getYearIntArbitrary(int min, int max) {
         return Arbitraries
                 .integers()
-                .between(1900, 2020);
+                .between(min, max);
     }
 
     private Arbitrary<EyeColor> getEyeColorArbitrary() {

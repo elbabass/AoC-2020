@@ -1,7 +1,6 @@
 package org.util.AoC2020.D04.Passport;
 
 import org.util.AoC2020.D04.Passport.Fields.*;
-import org.util.AoC2020.D04.Passport.Fields.PassportId;
 
 import static org.util.AoC2020.D04.Passport.Fields.PassportField.*;
 
@@ -37,7 +36,7 @@ public class MutablePassport {
                 case BIRTH_YEAR_KEY -> this.birthYear = new BirthYear((Integer) passportField.getValue());
                 case ISSUE_YEAR_KEY -> this.issueYear = new IssueYear((Integer) passportField.getValue());
                 case EXPIRATION_YEAR_KEY -> this.expirationYear = new ExpirationYear((Integer) passportField.getValue());
-                case HEIGHT_KEY -> this.height = new Height((Number) passportField.getValue());
+                case HEIGHT_KEY -> this.height = new Height(((Height)passportField).getValue());
                 case HAIR_COLOR_KEY -> this.hairColor = new HairColor((String) passportField.getValue());
                 case EYE_COLOR_KEY -> this.eyeColor = new EyeColor((String) passportField.getValue());
                 case PASSWORD_ID_KEY -> this.passportId = new PassportId((String) passportField.getValue());

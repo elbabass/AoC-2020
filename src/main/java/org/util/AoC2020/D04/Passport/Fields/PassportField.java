@@ -41,7 +41,7 @@ public abstract class PassportField<T> {
     }
 
     public String getPassportString() {
-        return hasValue() ? getKeyName() + ":" + value : "";
+        return hasValue() ? getKeyName() + ":" + toString() : "";
     }
 
     public String toString() {
