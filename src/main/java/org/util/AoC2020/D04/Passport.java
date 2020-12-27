@@ -18,6 +18,12 @@ public class Passport {
     public Passport() {
         birthYear = new BirthYear();
         issueYear = new IssueYear();
+        expirationYear = new ExpirationYear();
+        height = new Height();
+        hairColor = new HairColor();
+        eyeColor = new EyeColor();
+        passportId = new PassportId();
+        countryId = new CountryId();
     }
 
     public static Passport of(String stringifyPassword) {
@@ -32,11 +38,11 @@ public class Passport {
                         case BIRTH_YEAR_KEY -> passport.birthYear = (BirthYear) BirthYear.of(value);
                         case ISSUE_YEAR_KEY -> passport.issueYear = (IssueYear) IssueYear.of(value);
                         case EXPIRATION_YEAR_KEY -> passport.expirationYear = (ExpirationYear) ExpirationYear.of(value);
-                        case HEIGHT_KEY -> passport.height = new Height(value);
-                        case HAIR_COLOR_KEY -> passport.hairColor = new HairColor(value);
-                        case EYE_COLOR_KEY -> passport.eyeColor = new EyeColor(value);
-                        case PASSWORD_ID_KEY -> passport.passportId = new PassportId(value);
-                        case COUNTRY_ID_KEY -> passport.countryId = new CountryId(Integer.parseInt(value));
+                        case HEIGHT_KEY -> passport.height = (Height) Height.of(value);
+                        case HAIR_COLOR_KEY -> passport.hairColor = (HairColor) HairColor.of(value);
+                        case EYE_COLOR_KEY -> passport.eyeColor = (EyeColor) EyeColor.of(value);
+                        case PASSWORD_ID_KEY -> passport.passportId = (PassportId) PassportId.of(value);
+                        case COUNTRY_ID_KEY -> passport.countryId = (CountryId) CountryId.of(value);
                         default -> System.out.println("Field not found : " + key);
                     }
                 }));
@@ -47,12 +53,12 @@ public class Passport {
         return switch (keyCode) {
             case BIRTH_YEAR_KEY -> birthYear.hasValue();
             case ISSUE_YEAR_KEY -> issueYear.hasValue();
-            case EXPIRATION_YEAR_KEY -> expirationYear != null;
-            case HEIGHT_KEY -> height != null;
-            case HAIR_COLOR_KEY -> hairColor != null;
-            case EYE_COLOR_KEY -> eyeColor != null;
-            case PASSWORD_ID_KEY -> passportId != null;
-            case COUNTRY_ID_KEY -> countryId != null;
+            case EXPIRATION_YEAR_KEY -> expirationYear.hasValue();
+            case HEIGHT_KEY -> height.hasValue();
+            case HAIR_COLOR_KEY -> hairColor.hasValue();
+            case EYE_COLOR_KEY -> eyeColor.hasValue();
+            case PASSWORD_ID_KEY -> passportId.hasValue();
+            case COUNTRY_ID_KEY -> countryId.hasValue();
             default -> false;
         };
     }
@@ -62,11 +68,11 @@ public class Passport {
         newPassport.birthYear = new BirthYear(passport.birthYear.getValue());
         newPassport.issueYear = new IssueYear(passport.issueYear.getValue());
         newPassport.expirationYear = new ExpirationYear(passport.expirationYear.getValue());
-        newPassport.height = (passport.height == null) ? null : new Height(passport.height.getValue());
-        newPassport.hairColor = (passport.hairColor == null) ? null : new HairColor(passport.hairColor.getValue());
-        newPassport.eyeColor = (passport.eyeColor == null) ? null : new EyeColor(passport.eyeColor.getValue());
-        newPassport.passportId = (passport.passportId == null) ? null : new PassportId(passport.passportId.getValue());
-        newPassport.countryId = (passport.countryId == null) ? null : new CountryId(passport.countryId.getValue());
+        newPassport.height = new Height(passport.height.getValue());
+        newPassport.hairColor = new HairColor(passport.hairColor.getValue());
+        newPassport.eyeColor = new EyeColor(passport.eyeColor.getValue());
+        newPassport.passportId = new PassportId(passport.passportId.getValue());
+        newPassport.countryId = new CountryId(passport.countryId.getValue());
 
         return newPassport;
     }
@@ -75,18 +81,12 @@ public class Passport {
         String stringPassport = "";
         stringPassport += birthYear.getPassportString();
         stringPassport += " " + issueYear.getPassportString();
-        if (expirationYear != null)
-            stringPassport += " " + EXPIRATION_YEAR_KEY + ":" + expirationYear;
-        if (height != null)
-            stringPassport += " " + HEIGHT_KEY + ":" + height.getValue();
-        if (hairColor != null)
-            stringPassport += " " + HAIR_COLOR_KEY + ":" + hairColor.getValue();
-        if (eyeColor != null)
-            stringPassport += " " + EYE_COLOR_KEY + ":" + eyeColor.getValue();
-        if (passportId != null)
-            stringPassport += " " + PASSWORD_ID_KEY + ":" + passportId.getValue();
-        if (countryId != null)
-            stringPassport += " " + COUNTRY_ID_KEY + ":" + countryId.getValue();
+        stringPassport += " " + expirationYear.getPassportString();
+        stringPassport += " " + height.getPassportString();
+        stringPassport += " " + hairColor.getPassportString();
+        stringPassport += " " + eyeColor.getPassportString();
+        stringPassport += " " + passportId.getPassportString();
+        stringPassport += " " + countryId.getPassportString();
         return stringPassport.trim();
     }
 

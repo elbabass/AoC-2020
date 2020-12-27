@@ -1,42 +1,31 @@
 package org.util.AoC2020.D04;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Height {
-    private final Number value;
-
-    public Height(Number heightInCm) {
-        this.value = heightInCm;
+public class Height extends PassportField<Number> {
+    public Height() {
+        super();
     }
 
-    public Height(String heightString) {
+    public Height(Number assignment) {
+        super(assignment);
+    }
+
+    public static PassportField<Number> of(String heightString) {
         final Matcher matcher = Pattern
                 .compile(("^(\\d+)"))
                 .matcher(heightString);
         if (matcher.find()) {
-            value = Integer.parseInt(matcher.group(1));
+            return new Height(Integer.parseInt(matcher.group(1)));
         }
         else {
-            value = Integer.parseInt(heightString);
+            return new Height(Integer.parseInt(heightString));
         }
     }
 
-    public Number getValue() {
-        return value;
-    }
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Height)) return false;
-        Height height = (Height) o;
-        return value.equals(height.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
+    String getKeyName() {
+        return HEIGHT_KEY;
     }
 }

@@ -63,7 +63,7 @@ public class PassportVerificationTest {
     }
 
     @Test
-    void LoadedTestsHave2ValidPassports(){
+    void LoadedTestsHave2ValidPassports() {
         List<String> passportList = Helpers.parseParagraphsAsStrings("d04-tests.txt");
         final long expected = 2;
         final long actual = PassportValidation.countValidPassports(passportList);
@@ -75,7 +75,7 @@ public class PassportVerificationTest {
             @ForAll @IntRange(min = 80, max = 250) int value,
             @ForAll @StringLength(2) @LowerChars String unit
     ) {
-        Height height = new Height("" + value + unit);
+        Height height = (Height) Height.of("" + value + unit);
         assertThat(value).isEqualTo(height.getValue());
     }
 
@@ -232,7 +232,7 @@ public class PassportVerificationTest {
                 .strings()
                 .withChars('1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
                 .ofLength(6)
-                .map(EyeColor::new);
+                .map(s -> new EyeColor("#" + s));
     }
 
 
@@ -241,7 +241,7 @@ public class PassportVerificationTest {
                 .strings()
                 .withChars('1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
                 .ofLength(6)
-                .map(HairColor::new);
+                .map(s -> new HairColor("#" + s));
     }
 
 }

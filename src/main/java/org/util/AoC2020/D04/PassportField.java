@@ -36,7 +36,7 @@ public abstract class PassportField<T> {
         return assigned;
     }
 
-    T getValue() {
+    public T getValue() {
         return value;
     }
 
