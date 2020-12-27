@@ -151,16 +151,14 @@ public class Day4PassportTest {
 
     @Provide
     public Arbitrary<PassportField<?>[]> listOfAllFields() {
-        return getSetOfFieldsArbitrary(
-                this::getFields
-        );
+        return getSetOfFieldsArbitrary(this::getFields);
     }
 
-    private PassportField<?>[] getFields(Integer birthYear, Integer issueYear, Integer expirationYear, Height height, HairColor hairColor, EyeColor eyeColor, PassportId passportId, CountryId countryId) {
+    private PassportField<?>[] getFields(BirthYear birthYear, IssueYear issueYear, ExpirationYear expirationYear, Height height, HairColor hairColor, EyeColor eyeColor, PassportId passportId, CountryId countryId) {
         return new PassportField<?>[]{
-                new BirthYear(birthYear),
-                new IssueYear(issueYear),
-                new ExpirationYear(expirationYear),
+                birthYear,
+                issueYear,
+                expirationYear,
                 height,
                 hairColor,
                 eyeColor,
@@ -169,10 +167,10 @@ public class Day4PassportTest {
         };
     }
 
-    private Arbitrary<PassportField<?>[]> getSetOfFieldsArbitrary(Combinators.F8<Integer, Integer, Integer, Height, HairColor, EyeColor, PassportId, CountryId, PassportField<?>[]> combinator) {
-        Arbitrary<Integer> birthYears = getYearIntArbitrary();
-        Arbitrary<Integer> issueYears = getYearIntArbitrary();
-        Arbitrary<Integer> expirationYears = getYearIntArbitrary();
+    private Arbitrary<PassportField<?>[]> getSetOfFieldsArbitrary(Combinators.F8<BirthYear, IssueYear, ExpirationYear, Height, HairColor, EyeColor, PassportId, CountryId, PassportField<?>[]> combinator) {
+        Arbitrary<BirthYear> birthYears = getBirthYearArbitrary();
+        Arbitrary<IssueYear> issueYears = getIssueYearArbitrary();
+        Arbitrary<ExpirationYear> expirationYears = getExpirationYearArbitrary();
         Arbitrary<Height> heights = getHeightArbitrary();
         Arbitrary<HairColor> hairColors = getHairColorArbitrary();
         Arbitrary<EyeColor> eyeColors = getEyeColorArbitrary();
@@ -199,12 +197,11 @@ public class Day4PassportTest {
         Arbitrary<PassportId> passportIds = getPassportIdArbitrary();
         Arbitrary<CountryId> countryIds = getCountryIdArbitrary();
 
-        if(includeCountry) {
+        if (includeCountry) {
             return Combinators
                     .combine(birthYears, issueYears, expirationYears, heights, hairColors, eyeColors, passportIds, countryIds)
                     .as(Passport::new);
-        }
-        else {
+        } else {
             return Combinators
                     .combine(birthYears, issueYears, expirationYears, heights, hairColors, eyeColors, passportIds)
                     .as(Passport::new);
