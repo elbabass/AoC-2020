@@ -61,4 +61,6 @@ public abstract class PassportField<T> {
     public int hashCode() {
         return Objects.hash(value);
     }
+
+    public abstract boolean isValid();
 }

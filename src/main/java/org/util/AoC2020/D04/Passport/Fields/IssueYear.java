@@ -1,6 +1,6 @@
 package org.util.AoC2020.D04.Passport.Fields;
 
-public class IssueYear extends PassportField<Integer> {
+public class IssueYear extends YearPasswordField {
     public IssueYear() {
         super();
     }
@@ -16,5 +16,10 @@ public class IssueYear extends PassportField<Integer> {
     @Override
     public String getKeyName() {
         return ISSUE_YEAR_KEY;
+    }
+
+    @Override
+    public boolean isValid() {
+        return valueBetween(2010, 2020);
     }
 }

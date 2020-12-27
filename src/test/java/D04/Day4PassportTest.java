@@ -62,7 +62,7 @@ public class Day4PassportTest {
 
         @Property
         void HeightUnits(
-                @ForAll @IntRange(min = 80, max = 250) int value,
+                @ForAll @IntRange(min = 150, max = 193) int value,
                 @ForAll @StringLength(2) @LowerChars String unit
         ) {
             final String heightString = "" + value + unit;
@@ -87,6 +87,18 @@ public class Day4PassportTest {
             final long actual = PassportValidation.countValidPassports(passportList);
             Assertions.assertEquals(expected, actual);
         }
+
+        @Property
+        void FromValidFile(@ForAll("fromValidFile") String passportString) {
+            Passport passport = new Passport(passportString);
+            Assertions.assertTrue(PassportValidation.isValid(passport));
+        }
+
+        @Property
+        void FromInvalidFile(@ForAll("fromInvalidFile") String passportString) {
+            Passport passport = new Passport(passportString);
+            Assertions.assertFalse(PassportValidation.isValid(passport));
+        }
     }
 
     @Group
@@ -98,6 +110,18 @@ public class Day4PassportTest {
             PassportField<?>[] createdFields = new Passport(fields).getFields();
             assertThat(fields).isEqualTo(createdFields);
         }
+    }
+
+    @Provide
+    Arbitrary<String> fromValidFile() {
+        List<String> passportList = Helpers.parseParagraphsAsStrings("d04-valid.txt");
+        return Arbitraries.of(passportList.toArray(new String[0]));
+    }
+
+    @Provide
+    Arbitrary<String> fromInvalidFile() {
+        List<String> passportList = Helpers.parseParagraphsAsStrings("d04-invalid.txt");
+        return Arbitraries.of(passportList.toArray(new String[0]));
     }
 
     @Provide
@@ -185,7 +209,7 @@ public class Day4PassportTest {
                 .as(combinator);
     }
 
-    private void assertIsomorphicConversion(@ForAll("onlyYears") Passport passport) {
+    private void assertIsomorphicConversion(Passport passport) {
         Passport convertedBack = new Passport(passport.toString());
         assertThat(convertedBack).isEqualTo(passport);
     }
@@ -226,7 +250,7 @@ public class Day4PassportTest {
     private Arbitrary<Height> getHeightArbitrary() {
         return Arbitraries
                 .integers()
-                .between(80, 250)
+                .between(150, 193)
                 .map(i -> new Height(Pair.with(i, "cm")));
     }
 
@@ -249,8 +273,9 @@ public class Day4PassportTest {
     }
 
     private Arbitrary<EyeColor> getEyeColorArbitrary() {
-        return getHexColorStringArbitrary()
-                .map(s -> new EyeColor("#" + s));
+        return Arbitraries
+                .of(EyeColor.validEyeColors)
+                .map(EyeColor::new);
     }
 
     private Arbitrary<HairColor> getHairColorArbitrary() {
@@ -261,7 +286,7 @@ public class Day4PassportTest {
     private StringArbitrary getHexColorStringArbitrary() {
         return Arbitraries
                 .strings()
-                .withChars('1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
+                .withChars('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f')
                 .ofLength(6);
     }
 

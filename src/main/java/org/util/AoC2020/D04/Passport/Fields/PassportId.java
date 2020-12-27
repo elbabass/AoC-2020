@@ -17,4 +17,9 @@ public class PassportId extends PassportField<String> {
     public String getKeyName() {
         return PASSWORD_ID_KEY;
     }
+
+    @Override
+    public boolean isValid() {
+        return value != null && value.matches("\\d{9}");
+    }
 }

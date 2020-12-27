@@ -14,9 +14,14 @@ public class HairColor extends PassportField<String> {
         return HAIR_COLOR_KEY;
     }
 
+    @Override
+    public boolean isValid() {
+        return value != null
+                && value.matches("^#[a-f0-9]{6}$");
+    }
+
     public static PassportField<String> of(String hexadecimalColor) {
-        String hashTag = hexadecimalColor.startsWith("#")?"":"#";
-        return new HairColor(hashTag + hexadecimalColor) {
+        return new HairColor(hexadecimalColor) {
         };
     }
 

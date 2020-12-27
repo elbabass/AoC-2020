@@ -1,5 +1,6 @@
 package org.util.AoC2020.D04;
 
+import org.util.AoC2020.D04.Passport.Fields.PassportField;
 import org.util.AoC2020.D04.Passport.Passport;
 
 import java.util.Arrays;
@@ -17,8 +18,12 @@ public class PassportValidation {
             EYE_COLOR_KEY,
             PASSWORD_ID_KEY,
     };
+
     public static boolean isValid(Passport passport) {
-        return Arrays.stream(requiredFields).allMatch(passport::hasKey);
+        return Arrays.stream(requiredFields).allMatch(passport::hasKey)
+                && Arrays
+                .stream(passport.getFields())
+                .allMatch(PassportField::isValid);
     }
 
     public static long countValidPassports(List<String> passportList) {

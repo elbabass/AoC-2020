@@ -17,4 +17,9 @@ public class CountryId extends PassportField<Integer> {
     public String getKeyName() {
         return COUNTRY_ID_KEY;
     }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
 }
