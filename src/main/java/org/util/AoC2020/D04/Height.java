@@ -12,7 +12,6 @@ public class Height {
     }
 
     public Height(String heightString) {
-        System.out.println("Height String : '" + heightString + "'");
         final Matcher matcher = Pattern
                 .compile(("^(\\d+)"))
                 .matcher(heightString);
