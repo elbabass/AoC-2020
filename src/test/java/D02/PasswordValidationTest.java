@@ -38,16 +38,15 @@ public class PasswordValidationTest {
     void GeneratePasswordWithMinPolicyCharacters(
             @ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy
     ) {
-        String password = StringUtils.repeat(passwordPolicy.getCharacter(), passwordPolicy.getRangeMin());
-        Assertions.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
+        final Integer rangeEdge = passwordPolicy.getRangeMin();
+        assertPasswordWithRepetitionIsValid(passwordPolicy, rangeEdge);
     }
 
     @Property
     void GeneratePasswordWithMaxPolicyCharacters(
             @ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy
     ) {
-        String password = StringUtils.repeat(passwordPolicy.getCharacter(), passwordPolicy.getRangeMax());
-        Assertions.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
+        assertPasswordWithRepetitionIsValid(passwordPolicy, passwordPolicy.getRangeMax());
     }
 
     @Property
@@ -56,6 +55,11 @@ public class PasswordValidationTest {
     ) {
         String password = StringUtils.repeat(passwordPolicy.getCharacter(), passwordPolicy.getRangeMax() + 1);
         Assertions.assertFalse(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
+    }
+
+    private void assertPasswordWithRepetitionIsValid(@ForAll @ValidPasswordPolicy PasswordPolicy passwordPolicy, Integer rangeEdge) {
+        String password = StringUtils.repeat(passwordPolicy.getCharacter(), rangeEdge);
+        Assertions.assertTrue(PasswordValidation.validate(passwordPolicy, password, new PasswordRuleWithRange()));
     }
 
     @Property

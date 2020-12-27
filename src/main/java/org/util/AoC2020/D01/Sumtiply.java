@@ -1,7 +1,6 @@
 package org.util.AoC2020.D01;
 
 import org.apache.commons.collections4.ListUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -44,7 +43,6 @@ public class Sumtiply {
         return null;
     }
 
-    @NotNull
     private static int[] getRest(int[] numberList) {
         return Arrays.copyOfRange(numberList, 1, numberList.length);
     }

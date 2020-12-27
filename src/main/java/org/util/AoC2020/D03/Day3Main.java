@@ -2,7 +2,6 @@ package org.util.AoC2020.D03;
 
 import org.util.AoC2020.Helpers;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

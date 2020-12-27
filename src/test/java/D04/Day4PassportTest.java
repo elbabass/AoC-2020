@@ -194,7 +194,7 @@ public class Day4PassportTest {
         };
     }
 
-    private Arbitrary<PassportField<?>[]> getSetOfFieldsArbitrary(Combinators.F8<BirthYear, IssueYear, ExpirationYear, Height, HairColor, EyeColor, PassportId, CountryId, PassportField<?>[]> combinator) {
+    class PassportArbitraries {
         Arbitrary<BirthYear> birthYears = getBirthYearArbitrary();
         Arbitrary<IssueYear> issueYears = getIssueYearArbitrary();
         Arbitrary<ExpirationYear> expirationYears = getExpirationYearArbitrary();
@@ -203,36 +203,33 @@ public class Day4PassportTest {
         Arbitrary<EyeColor> eyeColors = getEyeColorArbitrary();
         Arbitrary<PassportId> passportIds = getPassportIdArbitrary();
         Arbitrary<CountryId> countryIds = getCountryIdArbitrary();
+    }
+
+    private Arbitrary<PassportField<?>[]> getSetOfFieldsArbitrary(Combinators.F8<BirthYear, IssueYear, ExpirationYear, Height, HairColor, EyeColor, PassportId, CountryId, PassportField<?>[]> combinator) {
+        PassportArbitraries pa = new PassportArbitraries();
 
         return Combinators
-                .combine(birthYears, issueYears, expirationYears, heights, hairColors, eyeColors, passportIds, countryIds)
+                .combine(pa.birthYears, pa.issueYears, pa.expirationYears, pa.heights, pa.hairColors, pa.eyeColors, pa.passportIds, pa.countryIds)
                 .as(combinator);
+    }
+
+    private Arbitrary<Passport> getPassportArbitrary(boolean includeCountry) {
+        PassportArbitraries pa = new PassportArbitraries();
+
+        if (includeCountry) {
+            return Combinators
+                    .combine(pa.birthYears, pa.issueYears, pa.expirationYears, pa.heights, pa.hairColors, pa.eyeColors, pa.passportIds, pa.countryIds)
+                    .as(Passport::new);
+        } else {
+            return Combinators
+                    .combine(pa.birthYears, pa.issueYears, pa.expirationYears, pa.heights, pa.hairColors, pa.eyeColors, pa.passportIds)
+                    .as(Passport::new);
+        }
     }
 
     private void assertIsomorphicConversion(Passport passport) {
         Passport convertedBack = new Passport(passport.toString());
         assertThat(convertedBack).isEqualTo(passport);
-    }
-
-    private Arbitrary<Passport> getPassportArbitrary(boolean includeCountry) {
-        Arbitrary<BirthYear> birthYears = getBirthYearArbitrary();
-        Arbitrary<IssueYear> issueYears = getIssueYearArbitrary();
-        Arbitrary<ExpirationYear> expirationYears = getExpirationYearArbitrary();
-        Arbitrary<Height> heights = getHeightArbitrary();
-        Arbitrary<HairColor> hairColors = getHairColorArbitrary();
-        Arbitrary<EyeColor> eyeColors = getEyeColorArbitrary();
-        Arbitrary<PassportId> passportIds = getPassportIdArbitrary();
-        Arbitrary<CountryId> countryIds = getCountryIdArbitrary();
-
-        if (includeCountry) {
-            return Combinators
-                    .combine(birthYears, issueYears, expirationYears, heights, hairColors, eyeColors, passportIds, countryIds)
-                    .as(Passport::new);
-        } else {
-            return Combinators
-                    .combine(birthYears, issueYears, expirationYears, heights, hairColors, eyeColors, passportIds)
-                    .as(Passport::new);
-        }
     }
 
     private Arbitrary<CountryId> getCountryIdArbitrary() {

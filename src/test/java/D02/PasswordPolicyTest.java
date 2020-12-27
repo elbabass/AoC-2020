@@ -1,6 +1,7 @@
 package D02;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.util.AoC2020.D02.PasswordPolicy;
 
@@ -9,6 +10,6 @@ public class PasswordPolicyTest {
     void ToSting() {
         String expected = "1-2 a";
         PasswordPolicy passwordPolicy = new PasswordPolicy(1, 2, 'a');
-        Assert.assertEquals(expected, passwordPolicy.toString());
+        Assertions.assertEquals(expected, passwordPolicy.toString());
     }
 }
