@@ -1,6 +1,5 @@
 package org.util.AoC2020;
 
-import io.reactivex.rxjava3.core.Maybe;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.util.AoC2020.D02.PasswordPolicy;
@@ -24,18 +23,6 @@ public class Helpers {
     public static int[] listOfIntFromText(@NotNull String str) {
         String[] strNums = str.split("\n");
         return Stream.of(strNums).mapToInt(Integer::parseInt).toArray();
-    }
-
-    @Deprecated
-    public static Maybe<String> getEntry(String basePath) {
-        String entries;
-        try {
-            //noinspection BlockingMethodInNonBlockingContext
-            entries = new String(Files.readAllBytes(Paths.get(inputBasePath + basePath)));
-        } catch (Exception e) {
-            return Maybe.error(e);
-        }
-        return Maybe.just(entries);
     }
 
     public static Stream<String> streamedStringsFromFile(String fileName) {
@@ -70,7 +57,8 @@ public class Helpers {
         PasswordPolicy passwordPolicy = new PasswordPolicy(
                 Integer.parseInt(policyRange[0]),
                 Integer.parseInt(policyRange[1]),
-                policyRangeAndCharacter[1].charAt(0));
+                policyRangeAndCharacter[1].charAt(0)
+        );
         return Pair.with(passwordPolicy, policyAndPasswordStr[1].trim());
     }
 
@@ -83,8 +71,7 @@ public class Helpers {
                 passports.add(currentPassport.toString());
                 currentPassport = new StringBuilder();
                 separator = "";
-            }
-            else {
+            } else {
                 currentPassport.append(separator).append(line);
                 separator = " ";
             }
