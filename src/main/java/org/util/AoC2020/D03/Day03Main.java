@@ -1,5 +1,6 @@
 package org.util.AoC2020.D03;
 
+import org.util.AoC2020.AdventOfCodeMain;
 import org.util.AoC2020.Helpers;
 
 import java.util.List;
@@ -7,10 +8,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-public class Day3Main {
-    static final String basePath = "d03-inputs.txt";
+public class Day03Main extends AdventOfCodeMain {
     private static final List<char[]> mapPatterns =
-            Objects.requireNonNull(Helpers.streamedStringsFromFile(basePath))
+            Objects.requireNonNull(Helpers.streamedStringsFromFile(getDailyInputFile(3)))
                     .map(String::toCharArray)
                     .collect(Collectors.toList());
 

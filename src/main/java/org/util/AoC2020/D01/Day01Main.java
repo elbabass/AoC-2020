@@ -1,21 +1,22 @@
 package org.util.AoC2020.D01;
 
+import org.util.AoC2020.AdventOfCodeMain;
 import org.util.AoC2020.Helpers;
 
-import java.util.Optional;
-
-public class Day01Main {
-    static final String basePath = "d01-inputs.txt";
+public class Day01Main extends AdventOfCodeMain {
 
     public static void main(String[] args) {
-        int[] listOfInput1 = Helpers.getConvertedIntInputs(basePath, Integer::parseInt);
-        Optional<Integer> output2 = sumtiplyN(listOfInput1, 2);
-        output2.ifPresentOrElse(System.out::println, () -> System.out.println("No Value Found for 2 complements to 2020"));
-        Optional<Integer> output3 = sumtiplyN(listOfInput1, 3);
-        output3.ifPresentOrElse(System.out::println, () -> System.out.println("No Value Found for 3 complements to 2020"));
+        int[] listOfInput1 = Helpers.getConvertedIntInputs(getDailyInputFile(1), Integer::parseInt);
+
+        Sumtiply
+                .SumtiplicationOf(listOfInput1, 2)
+                .ifPresentOrElse(System.out::println, printIfNotPresent(2));
+        Sumtiply
+                .SumtiplicationOf(listOfInput1, 3)
+                .ifPresentOrElse(System.out::println, printIfNotPresent(3));
     }
 
-    private static Optional<Integer> sumtiplyN(int[] listOfInput, int n) {
-        return Sumtiply.SumtiplicationOf(listOfInput, n);
+    private static Runnable printIfNotPresent(int number) {
+        return () -> System.out.println("No Value Found for " + number + " complements to 2020");
     }
 }

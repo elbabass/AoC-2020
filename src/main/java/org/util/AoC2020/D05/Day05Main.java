@@ -1,15 +1,15 @@
 package org.util.AoC2020.D05;
 
+import org.util.AoC2020.AdventOfCodeMain;
 import org.util.AoC2020.Helpers;
 
 import java.util.Objects;
 import java.util.OptionalInt;
 
-public class Day5Main {
-    static final String basePath = "d05-inputs.txt";
+public class Day05Main extends AdventOfCodeMain {
 
     public static void main(String[] args) {
-        final int[] ids = Objects.requireNonNull(Helpers.streamedStringsFromFile(basePath))
+        final int[] ids = Objects.requireNonNull(Helpers.streamedStringsFromFile(getDailyInputFile(5)))
                 .map(PlaneSeat::new)
                 .mapToInt(PlaneSeat::getId)
                 .toArray();
