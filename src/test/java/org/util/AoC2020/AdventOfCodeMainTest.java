@@ -1,12 +1,21 @@
+package org.util.AoC2020;
+
 import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
-import org.junit.jupiter.api.Assertions;
-import org.util.AoC2020.AdventOfCodeMain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
+class Day33Main extends AdventOfCodeMain {
+    public static String theStaticMethod() {
+        return currentClassGetter.getSimpleClassName();
+    }
+
+    public static String theStaticMethodLong() {
+        return currentClassGetter.getClassName();
+    }
+}
 
 class AdventOfCodeMainTest {
     @Property
@@ -27,4 +36,17 @@ class AdventOfCodeMainTest {
         assertThat(expected).isEqualTo(input);
     }
 
+    @Example
+    void getSimpleClassName_OfStaticMethod_returnsChildClassName() {
+        final String expected = "Day33Main";
+        final String actual = Day33Main.theStaticMethod();
+        assertThat(expected).isEqualTo(actual);
+    }
+
+    @Example
+    void getClassName_OfStaticMethod_returnsFullChildClassName() {
+        final String expected = "org.util.AoC2020.Day33Main";
+        final String actual = Day33Main.theStaticMethodLong();
+        assertThat(expected).isEqualTo(actual);
+    }
 }
