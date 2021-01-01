@@ -10,7 +10,9 @@ public class Day06Main extends AdventOfCodeMain {
         final List<String> groupAnswers = Helpers.parseParagraphsAsStrings(getDailyInputFile(6));
         AnswersAnalyzer answersAnalyzer = new AnswersAnalyzer(groupAnswers);
         long uniquesSum = answersAnalyzer.countUniquesSum();
+        long commonSum = answersAnalyzer.countCommonSum();
 
         System.out.println("Sum of all groups distinct answers : " + uniquesSum);
+        System.out.println("Sum of all groups common answers : " + commonSum);
     }
 }
